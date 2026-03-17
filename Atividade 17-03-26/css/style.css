@@ -1,0 +1,30 @@
+
+body {
+    background-color: black;
+    font-family: Arial;
+    text-align: center;
+}
+
+#container {
+    display: flex;
+    justify-content: space-around;
+}
+
+#cartao1, #cartao2, #cartao3 {
+    width: 350px;
+    color: white;
+    border: 4px solid blue;
+    padding: 10px;
+}
+
+img {
+    width: 100%;
+}
+
+button {
+    background-color: blue;
+    border: 0px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+}
