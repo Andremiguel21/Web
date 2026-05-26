@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Séries</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header> <h1>Catálogo de Séries</h1> </header>
+
+  
+
+  <div class="busca">
+    <input type="text" id="serie" placeholder="Digite uma série">
+    <button id="buscar">Buscar</button>
+  </div>
+
+  <div id="resultado"></div>
+
+  <script>
+    const botao = document.getElementById("buscar");
+    const resultado = document.getElementById("resultado");
+
+    botao.addEventListener("click", async () => {
+
+      const serie = document.getElementById("serie").value;
+
+      resultado.innerHTML = "";
+
+      if(serie === ""){
+        resultado.innerHTML = `
+          <p class="mensagem">Digite o nome de uma série.</p>
+        `;
+        return;
+      }
+
+      try {
+
+        const resposta = await fetch (`https://api.tvmaze.com/search/shows?q=${serie}`);
+
+        const dados = await resposta.json();
+
+        if(dados.length === 0){
+          resultado.innerHTML = `
+            <p class="mensagem">Nenhuma série encontrada.</p>
+          `;
+          return;
+        }
+
+        dados.forEach(item => {
+
+          const show = item.show;
+
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          card.innerHTML = `
+            <img src="${show.image ? show.image.medium : 'https://via.placeholder.com/210x295'}">
+
+            <h2>${show.name}</h2>
+
+            <p>Nota: ${show.rating.average || "Sem nota"}</p>
+          `;
+
+          resultado.appendChild(card);
+
+        });
+
+      } catch(erro){
+
+        resultado.innerHTML = `
+          <p class="mensagem">Erro ao buscar dados.</p>
+        `;
+
+        console.log(erro);
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
